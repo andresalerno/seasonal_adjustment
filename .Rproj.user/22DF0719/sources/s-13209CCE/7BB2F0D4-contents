@@ -1,0 +1,148 @@
+
+# Document Information ----
+my.d <- rstudioapi::getActiveDocumentContext()
+
+# Document Path ----
+my.file.location <- rstudioapi::getActiveDocumentContext()$path
+
+# Directory Path ----
+my.dir <- dirname(my.file.location)
+
+# Setting up the working directory ----
+setwd(my.dir)
+
+# Checking packages ----
+if(!require("gdata")) install.packages("gdata")
+if(!require("RMySQL")) install.packages("RMySQL")
+if(!require("DBI")) install.packages("DBI")
+if(!require("stringr")) install.packages("stringr")
+
+# Loading libraries ----
+library(gdata)
+library(RMySQL)
+library(DBI)
+library(stringr)
+library(XLConnect)
+library(XLConnectJars)
+library(xlsx)
+library(dplyr)
+library(tidyr)
+library(magrittr)
+library(lubridate)
+library(ggplot2)
+library(xts)
+library(seasonal)
+library(zoo)
+library(x13binary)
+
+# Fetching data file ----
+# balancete <- file.path("C:\\Users\\andre\\OneDrive\\Documentos\\Private\\Salerno\\Pessoal\\R Programming\\projects\\public_data\\balancete_sjc.xlsx")
+
+# perl <- file.path("C:\\Strawberry\\perl\\bin\\perl.exe")
+
+# file <- read.xls(balancete, verbose = TRUE, sheet = "balancete_sjc", perl = perl, stringsAsFactors = FALSE)
+
+# colnames(file_csv)
+
+# Fetching data using read.table() ----
+
+file_csv <- read.table(file = "balancete_sjc.csv",
+                       header = TRUE,
+                       na.strings = "EMPTY",
+                       colClasses = c("character", "character", "character", "character", "character", "character", "character", "numeric", "numeric", "numeric", "integer"),
+                       sep = ";",
+                       strip.white = TRUE)
+
+# Deleting empty columns ----
+empty_columns <- colnames(file_csv[,12:16])
+
+file_csv[,12:16] <- NULL
+
+# Deleting useless columns ----
+
+file_csv[,c(1,2,4,5,6, 11)] <- NULL
+
+# Definig column as date format pattern ----
+
+file_csv$yyyy.mm <- as.Date(file_csv$yyyy.mm, format="%Y-%m-%d")
+
+# Selecting "Receitas Correntes" ----
+receitas_correntes <- data.frame(file_csv %>%
+  select(c(colnames(file_csv))) %>%
+  filter(descricao == "RECEITAS CORRENTES"))
+
+# Deleting October-2018 (partial result) ----
+
+receitas_correntes <- receitas_correntes[-c(82), ]
+
+# Dividing "Valores" por k ----
+
+receitas_correntes <- receitas_correntes %>%
+  mutate(valores_mes = (valores_mes %/% 100L)) %>%
+  mutate(valores_ano = (valores_ano %/% 100L)) %>%
+  mutate(valores_orcados = (valores_orcados %/% 100L))
+
+as.integer(receitas_correntes$valores_orcados)
+
+# Plot ----
+
+(plot <- receitas_correntes %>% ggplot(aes(x = ymd(yyyy.mm), y = valores_mes)) + geom_line() + xlab("Dates"))
+
+# Preparing for X-Arima-Seats 13 ----
+
+Sys.setenv(X13_PATH = "C:\\Users\\andre\\OneDrive\\Documentos\\Private\\Salerno\\Pessoal\\R Programming\\projects\\public_data\\x13as")
+
+# Se está funcionando tudo corretamente
+checkX13()
+
+# Transform to TS ----
+
+receitas_correntes_adjus <- data.frame(receitas_correntes) %>%
+  select(yyyy.mm, valores_mes)
+
+write.csv(receitas_correntes_adjus, file = "MyData.csv")
+
+receitas_correntes_adjus <- as.xts(receitas_correntes_adjus, order.by = as.Date(receitas_correntes_adjus$yyyy.mm, "Y%-%m-%d"))
+
+receitas_correntes_adjus <- ts(data=receitas_correntes_adjus$valores_mes, frequency = 12,
+             start=c(2012,1), end=c(2018,10))
+
+
+
+ajuste <- seas(receitas_correntes_adjus)
+
+# print.ts(.)
+
+# Análise inicial ----
+
+plot <- receitas_correntes_adjus %>%
+  ggplot(aes(x = ymd(yyyy.mm), y = valores_mes)) + geom_line() + xlab("Dates")
+
+
+
+# Connection ----
+
+con <- dbConnect(RMySQL::MySQL(),
+                 dbname = "finance",
+                 host = "198.199.73.180",
+                 port = 3306,
+                 user = "root",
+                 password = "aspartners2018")
+
+dbSendQuery(con, "USE finance")
+
+#Caso você precise criar as variáveis no BD
+#dbSendQuery(con, "
+#CREATE TABLE ocupacao (
+#codigo_cbocenso VARCHAR (10),
+#codigo_censo_91 VARCHAR(10),
+#descricao_ocupacao VARCHAR(300));")
+
+dbListTables(con)
+
+dbWriteTable(con, file, name = "ocupacao", append = TRUE, row.names = FALSE)
+
+# Inserçao 
+#dbSendQuery(con, "INSERT INTO ocupacao
+#(file$codigo_cbocenso, file$codigo_censo_91, file$descricao_ocupacao)
+#            VALUES('%s', '%s', '%s');", file$codigo_cbocenso, file$codigo_censo_91, file$descricao_ocupacao)

@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542732551953.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F1343D93",
+    "lastKnownWriteTime" : 8243113858234803572,
+    "last_content_update" : 1542732551953,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "DC2012FB",
+        "caption" : "file_csv",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=file_csv&cache_key=DC2012FB",
+        "displayedObservations" : "24515",
+        "environment" : "",
+        "object" : "file_csv",
+        "preview" : "0",
+        "totalObservations" : "24515",
+        "variables" : "12"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

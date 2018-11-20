@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542731840342.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "19697273",
+    "id" : "83D2213E",
+    "lastKnownWriteTime" : 1542738354,
+    "last_content_update" : 1542738354409,
+    "path" : "~/Private/Salerno/Pessoal/R Programming/projects/seasonal_adjustment/seasonal_adjustment_sjc.R",
+    "project_path" : "seasonal_adjustment_sjc.R",
+    "properties" : {
+        "cursorPosition" : "84,21",
+        "scrollLine" : "61",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

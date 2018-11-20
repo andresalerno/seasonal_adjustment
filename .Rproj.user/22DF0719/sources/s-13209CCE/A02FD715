@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542734319399.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A02FD715",
+    "lastKnownWriteTime" : 7308604914264011873,
+    "last_content_update" : 1542734319399,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "53EB20C5",
+        "caption" : "ipca",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=ipca&cache_key=53EB20C5",
+        "displayedObservations" : 81,
+        "environment" : "",
+        "object" : "ipca",
+        "preview" : 0,
+        "totalObservations" : 81,
+        "variables" : 2
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

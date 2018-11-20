@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1542731893351.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "7BB2F0D4",
+    "lastKnownWriteTime" : 1542651172,
+    "last_content_update" : 1542651172,
+    "path" : "~/Private/Salerno/Pessoal/R Programming/projects/public_data/public_data.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "102,0",
+        "scrollLine" : "86"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
