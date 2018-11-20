@@ -13,6 +13,8 @@ setwd(my.dir)
 
 # Loading important libraries ----
 if(!require("fpp")) install.packages("fpp")
+if(!require("fpp2")) install.packages("fpp2")
+if(!require("seasonal")) install.packages("seasonal")
 
 library(fpp)
 library(fpp2)
